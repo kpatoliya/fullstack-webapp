@@ -3,10 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
+require('./models');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var User = mongoose.model('User');
 
+mongoose.connect('mongodb://localhost:27017/test-db', { useNewUrlParser: true, useUnifiedTopology: true})
 var app = express();
 
 // view engine setup
@@ -19,8 +22,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.get('/', function (req, res, next) {
+  res.render('index', {title:" SaaS Tutorial"})
+})
+
+app.post('/signup', function (req, res, next) {
+  console.log(req.body);
+  User.findOne({
+    email: req.body.email
+  }, function(err,user){
+    if (err) return next(err);
+    if (user) return  next({message: "User already exists"}) })
+  let newUser = new User({
+    email: req.body.email,
+    passwordHash: bcrypt.hashSync(req.body.password, 10)
+  })
+  newUser.save(function (err) {
+    if (err) return next(err);
+    res.redirect('/main');
+  });
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
