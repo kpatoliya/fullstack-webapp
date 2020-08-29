@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login form</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+<form action="/login" method="post">
+    <h1>Login Form</h1>
+    <div class="formcontainer">
+        <hr/>
+            <div class="container">
+                <label for="email"><strong>Username</strong></label>
+                <label>
+                    <input required type="email" name="email" placeholder="Your email" />
+                </label>
+            </div>
+            <div class="container">
+                <label for="password"><strong>Password</strong></label>
+                <label>
+                    <input required type="password" name="password" placeholder="Your password" />
+                </label>
+            </div>
+            <input type="submit" value="Login" />
+    </div>
+</form>
+</body>
+</html>
